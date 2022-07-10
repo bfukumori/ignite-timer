@@ -1,11 +1,33 @@
-import { differenceInSeconds } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { differenceInSeconds } from 'date-fns/esm'
+import { useContext, useEffect } from 'react'
+import { CyclesContext } from '../../../../contexts/CyclesContext'
 import { CountdownContainer, Separator } from './style'
 
 export function Countdown() {
-  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+  const {
+    amountSecondsPassed,
+    setSecondsPassed,
+    activeCycle,
+    markCurrentCycleAsFinished,
+  } = useContext(CyclesContext)
 
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+
+  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
+
+  const minutesAmount = Math.floor(currentSeconds / 60)
+  const secondsAmount = currentSeconds % 60
+
+  const minutes = String(minutesAmount).padStart(2, '0')
+  const seconds = String(secondsAmount).padStart(2, '0')
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${activeCycle.task} | ${minutes}:${seconds}`
+    } else {
+      document.title = 'Ignite Timer'
+    }
+  }, [activeCycle, minutes, seconds])
 
   useEffect(() => {
     let interval: number
@@ -17,26 +39,17 @@ export function Countdown() {
         )
 
         if (secondsDifference >= totalSeconds) {
-          setCycles((prevState) =>
-            prevState.map((cycle) => {
-              if (cycle.id === activeCycleId) {
-                return { ...cycle, finishedDate: new Date() }
-              } else {
-                return cycle
-              }
-            }),
-          )
+          markCurrentCycleAsFinished()
           clearInterval(interval)
-          setActiveCycleId(null)
         } else {
-          setAmountSecondsPassed(secondsDifference)
+          setSecondsPassed(secondsDifference)
         }
       }, 1000)
     }
     return () => {
       clearInterval(interval)
     }
-  }, [activeCycle, totalSeconds, activeCycleId])
+  }, [activeCycle, totalSeconds, markCurrentCycleAsFinished, setSecondsPassed])
 
   return (
     <CountdownContainer>
