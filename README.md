@@ -13,7 +13,7 @@
     <img alt="Stargazers" src="https://img.shields.io/github/stars/bfukumori/ignite-timer?style=social">
   </a>
 
-  <a href="https://ignite-feed-eta.vercel.app/">
+  <a href="https://ignite-timer-rho.vercel.app/">
     <img alt="ignite-timer" src="https://img.shields.io/badge/ignite-timer-%237159c1?style=flat&logo=ghost">
   </a>
 </p>
