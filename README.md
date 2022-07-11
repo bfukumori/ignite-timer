@@ -41,7 +41,7 @@
 
 ## About
 
-💡 ignite-timer - Counter to usue with Pomodoro technique.
+⏳ ignite-timer - Counter to usue with Pomodoro technique.
 
 Project developed during the ReactJS Ignite Course from [Rocketseat](https://www.rocketseat.com.br/ignite).
 
